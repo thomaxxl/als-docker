@@ -84,6 +84,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             did_send_spa = True
             admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')
 
+        admin_logger.info(f"SRA DIR {directory}")
         return send_from_directory(directory, path)
 
 
