@@ -62,7 +62,7 @@ http_type = "http"
 
 swagger_host = os.getenv("SWAGGER_HOST", swagger_host)
 swagger_host = os.getenv("FLASK_HOST", flask_host)
-port = os.getenv("SWAGGER_HOST", port)
+port = os.getenv("PORT", port)
 
 
 current_path = os.path.abspath(os.path.dirname(__file__))
