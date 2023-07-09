@@ -9,7 +9,7 @@
 
 ## Configure
 
-To configure the ApiLogicProject, change the environement variables in [docker_compose.yml]:
+To configure the ApiLogicProject, change the environement variables in [docker_compose.yml](docker_compose.yml):
 ```
     api-logic-server:
         environment:
