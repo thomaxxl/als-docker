@@ -3,10 +3,7 @@ version: "3.5"
 services:
     api-logic-server:
         environment:
-          - SWAGGER_HOST=192.168.109.130
-          - FLASK_HOST=0.0.0.0
-          - PORT=80
-          #- SECURITY_ENABLED=true
+          - APILOGICPROJECT_CLIENT_URI=//192.168.109.130
         build:
             context: .
         expose:
@@ -15,7 +12,6 @@ services:
             - .:/app
             - ./ApiLogicProject/ui/safrs-react-admin:/src/apilogicserver/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
         command: /usr/local/bin/gunicorn --reload --workers 10 --worker-connections 10 --access-logfile=- --pythonpath /app -b :5000 api_logic_server_run:flask_app
-        #command: /usr/local/bin/gunicorn -k gevent --reload --workers 10 --worker-connections 10 --access-logfile=- --pythonpath /app -b :5000 app:app
         working_dir:  /app/ApiLogicProject
 
     nginx:
