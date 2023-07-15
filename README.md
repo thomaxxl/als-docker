@@ -13,9 +13,7 @@ To configure the ApiLogicProject, change the environement variables in [docker-c
 ```
     api-logic-server:
         environment:
-          - SWAGGER_HOST=192.168.109.130
-          - FLASK_HOST=0.0.0.0
-          - PORT=80
+            - APILOGICPROJECT_CLIENT_URI=//192.168.109.130
 ```
 
 ## Run
