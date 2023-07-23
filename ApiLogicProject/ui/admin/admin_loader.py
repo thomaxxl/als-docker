@@ -71,7 +71,7 @@ def admin_events(flask_app: Flask, args: Args, validation_error: ValidationError
         admin_logger.info(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
         return redirect('/admin-app/index.html')  # --> return_spa
 
-    @flask_app.route("/admin-app/<path:path>")
+    #@flask_app.route("/admin-app/<path:path>")
     def return_spa(path=None):
         """ Step 2 - return minified sra for default admin app
         """

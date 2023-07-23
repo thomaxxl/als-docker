@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-#    This file initializes and starts the API Logic Server (v 09.01.11, July 15, 2023 21:22:59):
+#    This file initializes and starts the API Logic Server (v 09.01.11, July 23, 2023 07:00:41):
 #        $ python3 api_logic_server_run.py [--help]
 #
 #    Then, access the Admin App and API via the Browser, eg:  
@@ -70,11 +70,21 @@ from sqlalchemy.orm import Session
 import socket
 import warnings
 from flask import Flask, redirect, send_from_directory, send_file
-from safrs import ValidationError, SAFRSBase, SAFRSAPI
+from safrs import ValidationError, SAFRSBase, SAFRSAPI as _SAFRSAPI
 from ui.admin.admin_loader import admin_events
 from security.system.authentication import configure_auth
 import database.multi_db as multi_db
 
+
+class SAFRSAPI(_SAFRSAPI):
+
+    def __init__(self, *args, **kwargs):
+        client_uri = kwargs.pop('client_uri', None)
+        if client_uri:
+            kwargs['port'] = None
+            kwargs['host'] = client_uri
+        print(kwargs['host'])
+        super().__init__(*args, **kwargs)
 
 # ==================================
 #       LOGGING SETUP
@@ -95,7 +105,7 @@ if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
         app_logger.setLevel(logging.DEBUG)
         app_logger.debug(f'\nDEBUG level set from env\n')
 app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with CLI args: \n.. {args}\n')
-app_logger.info(f'Created July 15, 2023 21:22:59 at {str(current_path)}\n')
+app_logger.info(f'Created July 23, 2023 07:00:41 at {str(current_path)}\n')
 
 
 class ValidationErrorExt(ValidationError):
@@ -176,7 +186,7 @@ def api_logic_server_setup(flask_app, args):
 
             with open(Path(current_path).joinpath('security/system/custom_swagger.json')) as json_file:
                 custom_swagger = json.load(json_file)
-            safrs_api = SAFRSAPI(flask_app, app_db= db, host=args.swagger_host, port=args.swagger_port, 
+            safrs_api = SAFRSAPI(flask_app, app_db= db, host=args.swagger_host, port=args.swagger_port, client_uri=args.client_uri,  
                                  prefix = args.api_prefix, custom_swagger=custom_swagger)
 
             db = safrs.DB  # valid only after is initialized, above
