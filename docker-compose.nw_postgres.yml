@@ -1,0 +1,37 @@
+version: "3.5"
+
+services:
+    api-logic-server:
+        environment:
+          - APILOGICPROJECT_CLIENT_URI=//192.168.109.130
+          - SQLALCHEMY_DATABASE_URI=postgresql://postgres:p@nw_postgres/postgres
+          - SECURITY_ENABLED=false
+        build:
+            context: .
+        expose:
+            - 5000
+        volumes:
+            - .:/app
+            - ./ApiLogicProject/ui/safrs-react-admin:/src/apilogicserver/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+        command: /usr/local/bin/gunicorn --reload --workers 10 --worker-connections 10 --access-logfile=- --pythonpath /app -b :5000 api_logic_server_run:flask_app
+        working_dir:  /app/ApiLogicProject
+
+    nginx:
+        restart: always
+        image: nginx:latest
+        ports:
+            - "80:8080"
+            - "443:443"
+        volumes:
+            - ./www:/www:ro
+            - ./etc/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./etc/ssl:/etc/ssl:ro
+
+    nw_postgres:
+        image: apilogicserver/postgres:version2.0.0
+        restart: always
+        environment:
+          - PGDATA=/pgdata
+          - POSTGRES_PASSWORD=p
+        ports:
+          - "5432:5432"
