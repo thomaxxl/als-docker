@@ -1,0 +1,376 @@
+about:
+  date: July 23, 2023 08:23:34
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication:
+  endpoint: '{http_type}://{swagger_host}:{port}/api/auth/login'
+info:
+  number_relationships: 13
+  number_tables: 14
+resources:
+  Category:
+    attributes:
+    - label: ' category_id*'
+      name: category_id
+      search: true
+      sort: true
+    - name: category_name
+      required: true
+    - name: description
+    - name: picture
+    tab_groups:
+    - direction: tomany
+      fks:
+      - category_id
+      name: ProductList
+      resource: Product
+    type: Category
+    user_key: category_id
+  Customer:
+    attributes:
+    - label: ' customer_id*'
+      name: customer_id
+      required: true
+      search: true
+      sort: true
+    - name: company_name
+      required: true
+    - name: contact_name
+    - name: contact_title
+    - name: address
+    - name: city
+    - name: region
+    - name: postal_code
+    - name: country
+    - name: phone
+    - name: fax
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: CustomerCustomerDemoList
+      resource: CustomerCustomerDemo
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    type: Customer
+    user_key: customer_id
+  CustomerCustomerDemo:
+    attributes:
+    - label: ' customer_id*'
+      name: customer_id
+      required: true
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: customer_type_id
+      required: true
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - customer_type_id
+      name: customer_type
+      resource: CustomerDemographic
+    type: CustomerCustomerDemo
+    user_key: customer_id
+  CustomerDemographic:
+    attributes:
+    - label: ' customer_type_id*'
+      name: customer_type_id
+      required: true
+      search: true
+      sort: true
+    - name: customer_desc
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_type_id
+      name: CustomerCustomerDemoList
+      resource: CustomerCustomerDemo
+    type: CustomerDemographic
+    user_key: customer_type_id
+  Employee:
+    attributes:
+    - label: ' employee_id*'
+      name: employee_id
+      search: true
+      sort: true
+    - name: reports_to
+    - name: last_name
+      required: true
+    - name: first_name
+      required: true
+    - name: title
+    - name: title_of_courtesy
+    - name: birth_date
+      type: DATE
+    - name: hire_date
+      type: DATE
+    - name: address
+    - name: city
+    - name: region
+    - name: postal_code
+    - name: country
+    - name: home_phone
+    - name: extension
+    - name: photo
+    - name: notes
+    - name: photo_path
+    tab_groups:
+    - direction: tomany
+      fks:
+      - reports_to
+      name: EmployeeList
+      resource: Employee
+    - direction: tomany
+      fks:
+      - employee_id
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
+    - direction: tomany
+      fks:
+      - employee_id
+      name: OrderList
+      resource: Order
+    - direction: toone
+      fks:
+      - reports_to
+      name: Employee
+      resource: Employee
+    type: Employee
+    user_key: employee_id
+  EmployeeTerritory:
+    attributes:
+    - label: ' employee_id*'
+      name: employee_id
+      search: true
+      sort: true
+    - name: employee_id
+    - name: territory_id
+      required: true
+    tab_groups:
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    - direction: toone
+      fks:
+      - territory_id
+      name: territory
+      resource: Territory
+    type: EmployeeTerritory
+    user_key: employee_id
+  Order:
+    attributes:
+    - label: ' order_id*'
+      name: order_id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: employee_id
+    - name: ship_via
+    - name: order_date
+      type: DATE
+    - name: required_date
+      type: DATE
+    - name: shipped_date
+      type: DATE
+    - name: freight
+    - name: ship_name
+    - name: ship_address
+    - name: ship_city
+    - name: ship_region
+    - name: ship_postal_code
+    - name: ship_country
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    - direction: toone
+      fks:
+      - ship_via
+      name: shipper
+      resource: Shipper
+    type: Order
+    user_key: order_id
+  OrderDetail:
+    attributes:
+    - label: ' order_id*'
+      name: order_id
+      search: true
+      sort: true
+    - name: order_id
+    - name: product_id
+    - name: unit_price
+      required: true
+    - name: quantity
+      required: true
+    - name: discount
+      required: true
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderDetail
+    user_key: order_id
+  Product:
+    attributes:
+    - label: ' product_id*'
+      name: product_id
+      search: true
+      sort: true
+    - name: category_id
+    - name: supplier_id
+    - name: product_name
+      required: true
+    - name: quantity_per_unit
+    - name: unit_price
+    - name: units_in_stock
+    - name: units_on_order
+    - name: reorder_level
+    - name: discontinued
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: toone
+      fks:
+      - category_id
+      name: category
+      resource: Category
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: Product
+    user_key: product_id
+  Region:
+    attributes:
+    - label: ' region_id*'
+      name: region_id
+      search: true
+      sort: true
+    - name: region_description
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - region_id
+      name: TerritoryList
+      resource: Territory
+    type: Region
+    user_key: region_id
+  Shipper:
+    attributes:
+    - label: ' shipper_id*'
+      name: shipper_id
+      search: true
+      sort: true
+    - name: company_name
+      required: true
+    - name: phone
+    tab_groups:
+    - direction: tomany
+      fks:
+      - ship_via
+      name: OrderList
+      resource: Order
+    type: Shipper
+    user_key: shipper_id
+  Supplier:
+    attributes:
+    - label: ' supplier_id*'
+      name: supplier_id
+      search: true
+      sort: true
+    - name: company_name
+      required: true
+    - name: contact_name
+    - name: contact_title
+    - name: address
+    - name: city
+    - name: region
+    - name: postal_code
+    - name: country
+    - name: phone
+    - name: fax
+    - name: homepage
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: ProductList
+      resource: Product
+    type: Supplier
+    user_key: supplier_id
+  Territory:
+    attributes:
+    - label: ' territory_id*'
+      name: territory_id
+      required: true
+      search: true
+      sort: true
+    - name: region_id
+      required: true
+    - name: territory_description
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - territory_id
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
+    - direction: toone
+      fks:
+      - region_id
+      name: region
+      resource: Region
+    type: Territory
+    user_key: territory_id
+  UsState:
+    attributes:
+    - label: ' state_id*'
+      name: state_id
+      search: true
+      sort: true
+    - name: state_name
+    - name: state_abbr
+    - name: state_region
+    type: UsState
+    user_key: state_id
+settings:
+  HomeJS: http://localhost:5656/admin-app/home.js
+  max_list_columns: 8

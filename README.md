@@ -18,7 +18,7 @@ To configure the ApiLogicProject, change the environement variables in [docker-c
 
 ## Run
 
-The following will build and deploy the container locally.
+The following will build and deploy the default container stack locally:
 
 ```
 # docker-compose up
@@ -26,4 +26,16 @@ The following will build and deploy the container locally.
 
 Add the `-d` parameter to run in background.
 
+This will run
+* The [ApiLogicProject](ApiLogicProject) sqlite-backed northwind sample API
+* Nginx reverse proxy
 
+## Postgres
+
+[docker-compose.nw_postgres.yml](docker-compose.nw_postgres.yml) Uses a postgres container instead of sqlite
+
+```
+docker-compose -f docker-compose.nw_postgres.yml up
+```
+
+This will run the code from [ApiLogicProject.postgres](ApiLogicProject.postgres)

@@ -12,9 +12,8 @@ services:
             - 5000
         volumes:
             - .:/app
-            - ./ApiLogicProject/ui/safrs-react-admin:/src/apilogicserver/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
         command: /usr/local/bin/gunicorn --reload --workers 10 --worker-connections 10 --access-logfile=- --pythonpath /app -b :5000 api_logic_server_run:flask_app
-        working_dir:  /app/ApiLogicProject
+        working_dir:  /app/ApiLogicProject.postgres
 
     nginx:
         restart: always
